@@ -1,0 +1,11 @@
+C:\Users\Anton\Desktop\War\War\bin\Debug\War.exe.config
+C:\Users\Anton\Desktop\War\War\bin\Debug\War.exe
+C:\Users\Anton\Desktop\War\War\bin\Debug\War.pdb
+C:\Users\Anton\Desktop\War\War\bin\Debug\War.xml
+C:\Users\Anton\Desktop\War\War\obj\Debug\War.vbprojResolveAssemblyReference.cache
+C:\Users\Anton\Desktop\War\War\obj\Debug\War.Form1.resources
+C:\Users\Anton\Desktop\War\War\obj\Debug\War.Resources.resources
+C:\Users\Anton\Desktop\War\War\obj\Debug\War.vbproj.GenerateResource.Cache
+C:\Users\Anton\Desktop\War\War\obj\Debug\War.exe
+C:\Users\Anton\Desktop\War\War\obj\Debug\War.xml
+C:\Users\Anton\Desktop\War\War\obj\Debug\War.pdb
