@@ -1,10 +1,12 @@
 ﻿'This class is the functionality of the UI
 ' Must be the first class in the file
 Public Class Form1
+    Public cardPile As New List(Of Card)
+    Public player As HumanPlayer
     'what happens when the form load, initialize the deck
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dim c As Card = New Card(suits.clubs, faceCardRank.King)
-        Dim d As Deck = New Deck()
+        Dim deck As Deck = New Deck()
+        player = New HumanPlayer(deck)
     End Sub
 
     'What happens when the flip card button is clicked
@@ -28,10 +30,10 @@ End Enum
 'Collection of the face cards
 'each enum type is represented by an integer
 Public Enum faceCardRank
-    Jack = 10
-    Queen = 11
-    King = 12
-    Ace = 13
+    Jack = 11
+    Queen = 12
+    King = 13
+    Ace = 14
 End Enum
 
 'This class represents a single card
@@ -53,10 +55,14 @@ Public Class Card
     Public Function getSuit()
         Return MyClass.suit
     End Function
+
+    Public Sub printCard()
+        Console.Write(getSuit() & ", " & getRank() & " | ")
+    End Sub
 End Class
 
 Public Class Deck
-    Const NUMBER_OF_CARDS = 52
+    Const NUMBER_OF_CARDS = 51
     Private deck(NUMBER_OF_CARDS) As Card
 
     Public Sub New()
@@ -87,7 +93,7 @@ Public Class Deck
         For Each suit As Integer In suits
             'Console.Write(suit)
             'For the cards 2 to 9 without a face
-            For rank As Integer = 2 To 9
+            For rank As Integer = 2 To 10
                 'Create a new card and add it to the deck array
                 Dim c As Card = New Card(suit, rank)
                 deck(numberOfCards) = c
@@ -123,18 +129,25 @@ Public Class Deck
 End Class
 
 Public Class HumanPlayer
-    Private cardHand() As Card
+    Private cardHand As New List(Of Card)
 
     Public Sub New(ByRef deck As Deck)
-
+        getInitialHand(deck)
     End Sub
 
     Private Sub getInitialHand(ByRef deck As Deck)
-        ReDim cardHand(26)
-        For i As Integer = 1 To 26
-
+        For i As Integer = 0 To 25
+            cardHand.Add(deck.getCard(i))
+            cardHand(i).printCard()
         Next
     End Sub
+
+    Public Function getCard()
+        Dim card As Card
+        card = cardHand(0)
+        cardHand.RemoveAt(0)
+        Return card
+    End Function
 
 End Class
 
