@@ -1,19 +1,47 @@
 ﻿'This class is the functionality of the UI
 ' Must be the first class in the file
 Public Class Form1
-    Public cardPile As New List(Of Card)
-    Public player As HumanPlayer
+    Dim cardPile As New List(Of Card)
+    Dim player As Player
+    Dim computer As Player
+
     'what happens when the form load, initialize the deck
     Private Sub Form1_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim deck As Deck = New Deck()
-        player = New HumanPlayer(deck)
+        player = New Player(deck, typesOfPlayer.human)
+        computer = New Player(deck, typesOfPlayer.computer)
+        displayNumberOfCards()
     End Sub
 
     'What happens when the flip card button is clicked
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        'Console.Write(c.getSuit)
-        'Console.Write(c.getRank)
-        'getDeck()
+        flipCards()
+    End Sub
+
+    Private Sub flipCards()
+        Dim playerCard As Card = player.getCard()
+        Dim computerCard As Card = computer.getCard()
+        cardPile.Add(playerCard)
+        cardPile.Add(computerCard)
+        While (playerCard.getRank = computerCard.getRank)
+            playerCard = player.getCard()
+            computerCard = computer.getCard()
+            cardPile.Add(playerCard)
+            cardPile.Add(computerCard)
+        End While
+
+        If (playerCard.getRank > computerCard.getRank) Then
+            player.addCards(cardPile)
+        Else
+            computer.addCards(cardPile)
+        End If
+        displayNumberOfCards()
+        cardPile.Clear()
+    End Sub
+
+    Private Sub displayNumberOfCards()
+        humanNumber.Text = player.getNumberOfCards()
+        computerNumber.Text = computer.getNumberOfCards()
     End Sub
 End Class
 
@@ -34,6 +62,11 @@ Public Enum faceCardRank
     Queen = 12
     King = 13
     Ace = 14
+End Enum
+
+Public Enum typesOfPlayer
+    human = True
+    computer = False
 End Enum
 
 'This class represents a single card
@@ -128,18 +161,27 @@ Public Class Deck
     End Sub
 End Class
 
-Public Class HumanPlayer
+Public Class Player
     Private cardHand As New List(Of Card)
+    Public typeOfPlayer
 
-    Public Sub New(ByRef deck As Deck)
+    Public Sub New(ByRef deck As Deck, ByVal typeOfPlayer As Boolean)
+        MyClass.typeOfPlayer = typeOfPlayer
         getInitialHand(deck)
     End Sub
 
     Private Sub getInitialHand(ByRef deck As Deck)
-        For i As Integer = 0 To 25
-            cardHand.Add(deck.getCard(i))
-            cardHand(i).printCard()
-        Next
+        If (MyClass.typeOfPlayer = typesOfPlayer.human) Then
+            For i As Integer = 0 To 25
+                cardHand.Add(deck.getCard(i))
+                cardHand(i).printCard()
+            Next
+        Else
+            For i As Integer = 26 To 51
+                cardHand.Add(deck.getCard(i))
+                cardHand(i - 26).printCard()
+            Next
+        End If
     End Sub
 
     Public Function getCard()
@@ -149,8 +191,14 @@ Public Class HumanPlayer
         Return card
     End Function
 
-End Class
+    Public Sub addCards(ByRef cards As List(Of Card))
+        For Each card As Card In cards
+            cardHand.Add(card)
+        Next
+    End Sub
 
-Public Class ComputerPlayer
+    Public Function getNumberOfCards()
+        Return MyClass.cardHand.LongCount
+    End Function
 
 End Class
