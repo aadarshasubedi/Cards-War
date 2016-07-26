@@ -29,7 +29,10 @@ Public Class Form1
             cardPile.Add(playerCard)
             cardPile.Add(computerCard)
         End While
-
+        playerCard.printCard()
+        Console.Write(" vs ")
+        computerCard.printCard()
+        Console.Write(vbCrLf)
         If (playerCard.getRank > computerCard.getRank) Then
             player.addCards(cardPile)
         Else
@@ -44,30 +47,6 @@ Public Class Form1
         computerNumber.Text = computer.getNumberOfCards()
     End Sub
 End Class
-
-'Collection of the suits
-'each enum type is represented by an integer
-'e.g. spades = 2
-Public Enum suits
-    hearts
-    diamonds
-    spades
-    clubs
-End Enum
-
-'Collection of the face cards
-'each enum type is represented by an integer
-Public Enum faceCardRank
-    Jack = 11
-    Queen = 12
-    King = 13
-    Ace = 14
-End Enum
-
-Public Enum typesOfPlayer
-    human = True
-    computer = False
-End Enum
 
 'This class represents a single card
 'The constructor takes in a suit (see enum type) as an integer, and a rank as an integer (enum for face cards)
@@ -124,7 +103,6 @@ Public Class Deck
 
         'for every suit we will fill in the ranks
         For Each suit As Integer In suits
-            'Console.Write(suit)
             'For the cards 2 to 9 without a face
             For rank As Integer = 2 To 10
                 'Create a new card and add it to the deck array
@@ -146,7 +124,7 @@ Public Class Deck
         Next
     End Sub
 
-    Private Sub shuffleDeck(ByVal items() As Card)
+    Private Sub shuffleDeck(ByRef items() As Card)
         Dim max_index As Integer = items.Length - 1
         Dim rnd As New Random
         For i As Integer = 0 To max_index - 1
@@ -163,6 +141,7 @@ End Class
 
 Public Class Player
     Private cardHand As New List(Of Card)
+    Private discardedHand As New List(Of Card)
     Public typeOfPlayer
 
     Public Sub New(ByRef deck As Deck, ByVal typeOfPlayer As Boolean)
@@ -197,8 +176,38 @@ Public Class Player
         Next
     End Sub
 
+    Public Sub reshuffleCards()
+
+    End Sub
+
     Public Function getNumberOfCards()
         Return MyClass.cardHand.LongCount
     End Function
 
 End Class
+
+'Collection of the suits
+'each enum type is represented by an integer
+'e.g. spades = 2
+Public Enum suits
+    hearts
+    diamonds
+    spades
+    clubs
+End Enum
+
+'Collection of the face cards
+'each enum type is represented by an integer
+Public Enum faceCardRank
+    Jack = 11
+    Queen = 12
+    King = 13
+    Ace = 14
+End Enum
+
+Public Enum typesOfPlayer
+    human = True
+    computer = False
+End Enum
+'TODO: war case, if the cards are the same then draw 3 cards and flip the fourth, winner takes all the cards
+'TODO: second pile for each player that gets reshuffled in everytime their cardhand runs out
