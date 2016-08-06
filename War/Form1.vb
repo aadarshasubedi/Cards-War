@@ -18,30 +18,49 @@ Public Class Form1
         flipCards()
     End Sub
 
+    'This subprodceedure flips a player card and a computer card
+    'Cards are added to the card pile until either player of computer has a better card
     Private Sub flipCards()
+        Dim results As String
         Dim playerCard As Card = player.getCard()
         Dim computerCard As Card = computer.getCard()
         cardPile.Add(playerCard)
         cardPile.Add(computerCard)
+        'If the cards are the same rank then we have war
+        'while we have war you need to draw more cards
         While (playerCard.getRank = computerCard.getRank)
-            playerCard = player.getCard()
-            computerCard = computer.getCard()
-            cardPile.Add(playerCard)
-            cardPile.Add(computerCard)
+            'In war you both draw 3 cards "face down" and then flip the 4th card up
+            'To achieve the same result in our code we add 4 cards to each pile but 
+            'will only compare the last card of each (replace the playerCard and compuerCard varaibles)
+            GameResultsText.Text &= "WAR!!!" & vbCrLf
+            For i As Integer = 1 To 4
+                playerCard = player.getCard()
+                computerCard = computer.getCard()
+                cardPile.Add(playerCard)
+                cardPile.Add(computerCard)
+            Next
         End While
-        playerCard.printCard()
-        Console.Write(" vs ")
-        computerCard.printCard()
-        Console.Write(vbCrLf)
+        'This is a string that we print out to the Game Results Text Box
+        results = "You: " & playerCard.printCard() & " | Computer: " & computerCard.printCard() & vbCrLf
+        '&= allows us to keep adding to the textbox.
+        GameResultsText.Text &= results
+        'Check who won the card flip
+        'When the player wins we add the cards from the pile to their hand
+        'When the computer wins we add the cards from the pile to their hand
         If (playerCard.getRank > computerCard.getRank) Then
             player.addCards(cardPile)
+            GameResultsText.Text &= "You Won +" & cardPile.Count / 2 & vbCrLf
         Else
             computer.addCards(cardPile)
+            GameResultsText.Text &= "Computer Won +" & cardPile.Count / 2 & vbCrLf
         End If
+        'Show number of cards in each players hands
         displayNumberOfCards()
+        'Clear the cards added to the pile.
         cardPile.Clear()
     End Sub
 
+    'Displays each of the players number of cards in their respective textboxes
     Private Sub displayNumberOfCards()
         humanNumber.Text = player.getNumberOfCards()
         computerNumber.Text = computer.getNumberOfCards()
@@ -68,9 +87,24 @@ Public Class Card
         Return MyClass.suit
     End Function
 
-    Public Sub printCard()
-        Console.Write(getSuit() & ", " & getRank() & " | ")
-    End Sub
+    Public Function printCard()
+        Dim suitName As String
+        Dim currentSuit As Integer
+        suitName = "none"
+        currentSuit = getSuit()
+
+        Select Case currentSuit
+            Case 0
+                suitName = "hearts"
+            Case 1
+                suitName = "diamonds"
+            Case 2
+                suitName = "spades"
+            Case 3
+                suitName = "clubs"
+        End Select
+        Return suitName & ", " & getRank()
+    End Function
 End Class
 
 Public Class Deck
@@ -209,5 +243,4 @@ Public Enum typesOfPlayer
     human = True
     computer = False
 End Enum
-'TODO: war case, if the cards are the same then draw 3 cards and flip the fourth, winner takes all the cards
 'TODO: second pile for each player that gets reshuffled in everytime their cardhand runs out
