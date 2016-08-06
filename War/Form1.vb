@@ -13,7 +13,7 @@ Public Class Form1
         displayNumberOfCards()
     End Sub
 
-    'What happens when the flip card button is clicked
+    'the subproceedure flipCards is called in the event that the Button_1 "Flip Cards" is clicked
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         flipCards()
     End Sub
@@ -224,10 +224,10 @@ End Class
 'each enum type is represented by an integer
 'e.g. spades = 2
 Public Enum suits
-    hearts
-    diamonds
-    spades
-    clubs
+    hearts = 0
+    diamonds = 1
+    spades = 2
+    clubs = 3
 End Enum
 
 'Collection of the face cards
